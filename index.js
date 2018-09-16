@@ -3,10 +3,6 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var users = [];
 
-// app.get('/', function(req, res){
-//   res.sendFile(__dirname + '/signup.html');
-// });
-
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
@@ -14,7 +10,10 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('disconnect', function(){
-    console.log('user disconnected');
+  	('a user disconnected')
+    if (!socket.nickname) return;
+    users.splice(users.indexOf(socket.nickname), 1);
+    io.sockets.emit('usernames', users);
   });
 
   socket.on('chat message', function(msg){
@@ -23,7 +22,7 @@ io.on('connection', function(socket){
 
   socket.on('send-nickname', function(data, callback) {
   	if (users.indexOf(data) !== -1) {
-  		callback(false); //nickname already exists
+  		callback(false); //nickname already exists, no need to remove from users array
   	} else {
   		callback(true);
 	    socket.nickname = data;
@@ -33,10 +32,6 @@ io.on('connection', function(socket){
   		
   	}
 	});
-
-	// socket.on('get-users', function() {
-	// 	return users;
-	// })
 });
 
 http.listen(3000, function(){
