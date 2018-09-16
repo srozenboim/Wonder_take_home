@@ -1,0 +1,23 @@
+{
+  "name": "wonder-challenge",
+  "version": "1.0.0",
+  "description": "wonder take home challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srozenboim/Wonder_take_home.git"
+  },
+  "dependencies": {
+    "express": "^4.15.2",
+    "socket.io": "^2.1.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/srozenboim/Wonder_take_home/issues"
+  },
+  "homepage": "https://github.com/srozenboim/Wonder_take_home#readme"
+}
