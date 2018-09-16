@@ -42,6 +42,7 @@
         var nicknameForm = $('#signup');
         var nicknameError = $('#nickError');
         var nicknameInput = $('#nickname');
+        var roomId;
 
         $(nicknameForm).submit(function(e) {
           e.preventDefault();
@@ -65,12 +66,15 @@
             $("#welcomeMessage").html('');
             $('#welcomeMessage').append("<h3>Waiting for someone to join this chat</h3>");
           }
+        })
 
+        socket.on('roomId', function(data) {
+          roomId = data;
         })
 
 
         $('#chatForm').submit(function(){
-          socket.emit('chat message', $('#m').val());
+          socket.emit('chat message', $('#m').val(), roomId);
           $('#m').val('');
           return false;
         });
