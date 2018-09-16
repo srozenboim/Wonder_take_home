@@ -58,7 +58,6 @@
         })
 
         socket.on('usernames', function(data) {
-          console.log('usernames:', data)
           if (data.length % 2 === 0) {
             $("#welcomeMessage").html('');
             $('#welcomeMessage').append("<h3>Chat between " + data[0] + " and " + data[1] + "</h3>");
