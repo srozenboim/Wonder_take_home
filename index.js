@@ -45,9 +45,9 @@ io.on('connection', function(socket){
 	});
 
 	function removeFromChatroom(user) {
+		var usernames = rooms[roomId].usernames;
 		Object.keys(rooms).forEach(function(roomId) {
-			if (rooms[roomId].usernames.includes(user)) {
-				var usernames = rooms[roomId].usernames;
+			if (usernames.includes(user)) {
 				var userIndex = usernames.indexOf(user);
 				usernames.splice(userIndex);
 				socket.leave(roomId);
@@ -59,24 +59,24 @@ io.on('connection', function(socket){
 
 	function createChatrooms(newUser) {
 		// take array of users and split them into chatrooms of 2 users per room
-			Object.keys(rooms).forEach(function(roomId) {
-				if (rooms[roomId].status === 'open') {
-					if (rooms[roomId].usernames.length < 2) {
-						var usernames = rooms[roomId].usernames;
-						usernames.push(newUser);
-						socket.join(roomId);
-						io.to(roomId).emit('usernames', usernames);
-						io.to(roomId).emit('roomId', roomId)
-					} else {
-						var newRoomId = Number(roomId) + 1;
-						rooms[roomId].status = 'closed'
-						rooms[newRoomId] = {status: 'open', usernames: [newUser]}
-						socket.join(newRoomId);
-						io.to(newRoomId).emit('usernames', rooms[newRoomId].usernames);
-						io.to(newRoomId).emit('roomId', newRoomId)
-					}
-				}				
-			})
+		var usernames = rooms[roomId].usernames;
+		Object.keys(rooms).forEach(function(roomId) {
+			if (rooms[roomId].status === 'open') {
+				if (usernames.length < 2) {
+					usernames.push(newUser);
+					socket.join(roomId);
+					io.to(roomId).emit('usernames', usernames);
+					io.to(roomId).emit('roomId', roomId)
+				} else {
+					var newRoomId = Number(roomId) + 1;
+					rooms[roomId].status = 'closed'
+					rooms[newRoomId] = {status: 'open', usernames: [newUser]}
+					socket.join(newRoomId);
+					io.to(newRoomId).emit('usernames', rooms[newRoomId].usernames);
+					io.to(newRoomId).emit('roomId', newRoomId)
+				}
+			}				
+		})
 	}
 });
 

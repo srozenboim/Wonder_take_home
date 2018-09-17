@@ -71,7 +71,6 @@
           roomId = data;
         })
 
-
         $('#chatForm').submit(function(){
           socket.emit('chat message', $('#m').val(), roomId);
           $('#m').val('');
